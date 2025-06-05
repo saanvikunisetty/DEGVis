@@ -4,11 +4,11 @@
 #if (!requireNamespace("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")
 
-#BiocManager::install("DESeq2")
+BiocManager::install("DESeq2", force = TRUE)
 #BiocManager::install("airway", force = TRUE)
 
 #library(tidyverse)
-#library(DESeq2)
+library(DESeq2)
 #library(airway)
 #library(pheatmap)
 
@@ -31,3 +31,7 @@ colData(airway_filtered)$cell <- as.factor(colData(airway_filtered)$cell)
 #treat different sample types as categories
 dim(airway)         
 dim(airway_filtered)
+#overall data cleaning
+
+dds <- DESeqDataSet(airway_filtered, design = ~ cell + dex)
+dds <- DESeq(dds)
