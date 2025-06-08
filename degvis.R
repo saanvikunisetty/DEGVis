@@ -50,3 +50,29 @@ plotMA(res, ylim = c(-5, 5))
 #minus average plot
 #log ratio against average intensity
 #shows difference in gene expression between different samples
+
+library(ggplot2)
+library(ggrepel)
+res_df <- as.data.frame(resOrdered)
+#DEseq results converted to dataframe format
+res_df <- na.omit(res_df)
+#filter out NA values
+res_df$significant <- res_df$padj < 0.05
+res_df$gene <- rownames(res_df)
+#add columns for significance and gene names
+ggplot(res_df, aes(x = log2FoldChange, y = -log10(pvalue), color = significant)) +
+  geom_point(alpha = 0.4) +
+  scale_color_manual(values = c("black", "red")) +
+  geom_text_repel(
+    data = subset(res_df, padj < 1e-100),  # Label only most significant ones
+    aes(label = gene),
+    size = 3,
+    max.overlaps = 10
+  ) +
+  labs(
+    title = "Volcano Plot",
+    x = "log2 Fold Change",
+    y = "-log10 p-value"
+  ) +
+  theme_minimal()
+#volcano plot
