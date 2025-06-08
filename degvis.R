@@ -45,3 +45,8 @@ resOrdered <- res[order(res$padj), ]
 print(head(resOrdered))
 #sort from smallest to largest p-value
 #determine most certain differentially expressed genes
+
+plotMA(res, ylim = c(-5, 5))
+#minus average plot
+#log ratio against average intensity
+#shows difference in gene expression between different samples
